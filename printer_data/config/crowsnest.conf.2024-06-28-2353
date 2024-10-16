@@ -1,0 +1,72 @@
+#### crowsnest.conf
+#### This is a typical default config.
+#### Also used as default in mainsail / MainsailOS
+#### See:
+#### https://github.com/mainsail-crew/crowsnest/blob/master/README.md
+#### for details to configure to your needs.
+
+
+#####################################################################
+####                                                            #####
+####      Information about ports and according URL's           #####
+####                                                            #####
+#####################################################################
+####                                                            #####
+####    Port 8080 equals /webcam/?action=[stream/snapshot]      #####
+####    Port 8081 equals /webcam2/?action=[stream/snapshot]     #####
+####    Port 8082 equals /webcam3/?action=[stream/snapshot]     #####
+####    Port 8083 equals /webcam4/?action=[stream/snapshot]     #####
+####                                                            #####
+#####################################################################
+####    RTSP Stream URL: ( if enabled and supported )           #####
+####    rtsp://<ip>:<rtsp_port>/stream.h264                     #####
+#####################################################################
+
+
+[crowsnest]
+log_path: /home/hawk16zz/printer_data/logs/crowsnest.log
+log_level: verbose                      # Valid Options are quiet/verbose/debug
+delete_log: false                       # Deletes log on every restart, if set to true
+no_proxy: false
+
+[cam 1]
+mode: ustreamer                         # ustreamer - Provides mjpg and snapshots. (All devices)
+                                        # camera-streamer - Provides webrtc, mjpg and snapshots. (rpi + Raspi OS based only)
+enable_rtsp: false                      # If camera-streamer is used, this enables also usage of an rtsp server
+rtsp_port: 8554                         # Set different ports for each device!
+port: 8080                              # HTTP/MJPG Stream/Snapshot Port
+device: /dev/video0                     # See Log for available ...
+resolution: 1920x1080                   # widthxheight format
+max_fps: 30                             # If Hardware Supports this it will be forced, otherwise ignored/coerced.
+#custom_flags:                          # You can run the Stream Services with custom flags.
+#Add v4l2-ctl parameters to setup your camera, see Log what your cam is capable of.
+#v4l2ctl: gain=45, zoom_absolute=11, white_balance_automatic=0, white_balance_temperature=5500, brightness=116, contrast=129, saturation=115, sharpness=100, auto_exposure=0
+v4l2ctl: gain=45, zoom_absolute=10, white_balance_automatic=0, white_balance_temperature=6500, brightness=140, contrast=115, saturation=115, sharpness=100, auto_exposure=0, focus_automatic_continuous=1
+
+#Supported Controls: 
+#
+#User Controls:
+#brightness 0x00980900 (int)    : min=0 max=255 step=1 default=128 value=145
+#contrast 0x00980901 (int)    : min=0 max=255 step=1 default=128 value=120
+#saturation 0x00980902 (int)    : min=0 max=255 step=1 default=128 value=110
+#white_balance_automatic 0x0098090c (bool)   : default=1 value=0
+#gain 0x00980913 (int)    : min=0 max=100 step=1 default=5 value=45
+#power_line_frequency 0x00980918 (menu)   : min=0 max=2 default=1 value=2 (60 Hz)
+#0: Disabled
+#1: 50 Hz
+#2: 60 Hz
+#white_balance_temperature 0x0098091a (int)    : min=2600 max=6500 step=1 default=4650 value=5500
+#sharpness 0x0098091b (int)    : min=0 max=255 step=1 default=128 value=100
+#
+#Camera Controls
+#
+#auto_exposure 0x009a0901 (menu)   : min=0 max=3 default=0 value=0 (Auto Mode)
+#0: Auto Mode
+#1: Manual Mode
+#2: Shutter Priority Mode
+#3: Aperture Priority Mode
+#exposure_time_absolute 0x009a0902 (int)    : min=0 max=6500 step=1 default=100 value=100 flags=inactive
+#pan_absolute 0x009a0908 (int)    : min=-36000 max=36000 step=3600 default=0 value=0
+#tilt_absolute 0x009a0909 (int)    : min=-36000 max=36000 step=3600 default=0 value=0
+#focus_automatic_continuous 0x009a090c (bool)   : default=0 value=1
+#zoom_absolute 0x009a090d (int)    : min=10 max=20 step=1 default=10 value=10
